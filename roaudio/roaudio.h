@@ -3,6 +3,7 @@
 
 namespace roaudio {
 
+// init and release audio component
 void init();
 void release();
 
