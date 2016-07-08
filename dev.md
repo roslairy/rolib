@@ -5,6 +5,7 @@
 add comments on codes for doxygen
 add tests
 function to load from memory
+use cmake to build
 
 ## roaudio
 

@@ -1,11 +1,6 @@
 #ifndef _ROGEN_ROGRAPH_H_
 #define _ROGEN_ROGRAPH_H_
 
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "glfw3.lib")
-#pragma comment(lib, "SOIL.lib")
-
 namespace rograph {
 
 // initialize opengl

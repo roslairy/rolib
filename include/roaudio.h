@@ -1,11 +1,6 @@
 #ifndef _ROGEN_ROAUDIO_H_
 #define _ROGEN_ROAUDIO_H_
 
-#pragma comment(lib, "libogg_static.lib")
-#pragma comment(lib, "libvorbis_static.lib")
-#pragma comment(lib, "libvorbisfile_static.lib")
-#pragma comment(lib, "OpenAL32.lib")
-
 namespace roaudio {
 
 void init();
