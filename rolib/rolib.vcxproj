@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3D835FA9-A352-41AC-B657-C186F8E802A2}</ProjectGuid>
-    <RootNamespace>rograph</RootNamespace>
+    <ProjectGuid>{4A7968E2-DF98-459D-93BC-09D714C048A1}</ProjectGuid>
+    <RootNamespace>rolib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,9 +70,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -81,14 +83,10 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>copy $(ProjectDir)rograph.h $(SolutionDir)include</Command>
+      <Command>copy $(ProjectDir)rograph.h $(SolutionDir)include
+copy $(ProjectDir)roaudio.h $(SolutionDir)include
+copy $(ProjectDir)roinput.h $(SolutionDir)include</Command>
     </PostBuildEvent>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
-    <Lib>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,7 +108,9 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(ProjectDir)rograph.h $(SolutionDir)include</Command>
+      <Command>copy $(ProjectDir)rograph.h $(SolutionDir)include
+copy $(ProjectDir)roaudio.h $(SolutionDir)include
+copy $(ProjectDir)roinput.h $(SolutionDir)include</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,15 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="glew.h" />
-    <ClInclude Include="glfw3.h" />
-    <ClInclude Include="ProgramBuilder.h" />
-    <ClInclude Include="rograph.h" />
-    <ClInclude Include="SOIL.h" />
+    <ClCompile Include="ProgramBuilder.cpp" />
+    <ClCompile Include="roaudio.cpp" />
+    <ClCompile Include="rograph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ProgramBuilder.cpp" />
-    <ClCompile Include="rograph.cpp" />
+    <ClInclude Include="ProgramBuilder.h" />
+    <ClInclude Include="roaudio.h" />
+    <ClInclude Include="rograph.h" />
+    <ClInclude Include="roinput.h" />
+    <ClInclude Include="SOIL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

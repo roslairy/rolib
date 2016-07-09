@@ -1,14 +1,15 @@
 #include "rograph.h"
+#include "roinput.h"
 
 #include <iostream>
 #include <map>
 
-#include "glew.h"
-#include "glfw3.h"
+#include <GL\glew.h>
+#include <GLFW\glfw3.h>
 #include "SOIL.h"
 #include "ProgramBuilder.h"
 #include "glm\mat4x4.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "glm\gtc\matrix_transform.hpp"
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glew32.lib")

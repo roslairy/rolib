@@ -3,10 +3,11 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <assert.h>
 
 #include "vorbis\vorbisfile.h"
-#include "al.h"
-#include "alc.h"
+#include <al\al.h>
+#include <al\alc.h>
 
 #pragma comment(lib, "libogg_static.lib")
 #pragma comment(lib, "libvorbis_static.lib")
@@ -17,8 +18,16 @@ namespace roaudio {
 
 using namespace std;
 
-vector<unsigned> audioObjs;
-vector<unsigned> oggObjs;
+typedef struct _AudioObj {
+    ALuint source = -1;
+} AudioObj;
+
+typedef struct _OggObj {
+    ALuint buffer = -1;
+} OggObj;
+
+map<ALuint, AudioObj*> audioObjs;
+map<ALuint, OggObj*> oggObjs;
 
 void init() {
     ALCdevice *Device;
@@ -31,8 +40,13 @@ void init() {
 }
 
 void release() {
-    alDeleteSources(audioObjs.size(), &audioObjs[0]);
-    alDeleteBuffers(oggObjs.size(), &oggObjs[0]);
+    stopAll();
+    for each (auto pair in audioObjs){
+        alDeleteSources(1, &pair.first);
+    }
+    for each (auto pair in oggObjs) {
+        alDeleteBuffers(1, &pair.first);
+    }
     ALCdevice *Device;
     ALCcontext *Context;
     Context = alcGetCurrentContext();
@@ -43,21 +57,18 @@ void release() {
 }
 
 unsigned createAudioObj() {
-    ALuint audioObj;
-    alGenSources(1, &audioObj);
-    audioObjs.push_back(audioObj);
-    return audioObj;
+    ALuint source;
+    alGenSources(1, &source);
+    AudioObj* obj = new AudioObj;
+    obj->source = source;
+    audioObjs[source] = obj;
+    return source;
 }
 
-void releaseAudioObj(unsigned audioObj) {
-    if (alIsSource(audioObj)) {
-        alDeleteSources(1, &audioObj);
-        auto it = find(audioObjs.begin(), audioObjs.end(), audioObj);
-        audioObjs.erase(it);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
-    }
+void releaseAudioObj(ALuint audioObj) {
+    assert(alIsSource(audioObj));
+    alDeleteSources(1, &audioObj);
+    audioObjs.erase(audioObj);
 }
 
 unsigned loadOgg(const char *path) {
@@ -85,57 +96,54 @@ unsigned loadOgg(const char *path) {
     ALuint bo;
     alGenBuffers(1, &bo);
     alBufferData(bo, format, buffer, pointer, freq);
-    oggObjs.push_back(bo);
+
+    OggObj* oo = new OggObj;
+    oo->buffer = bo;
+    oggObjs[bo] = oo;
 
     delete buffer;
     return bo;
 }
 
 void unloadOgg(unsigned oggObj) {
-    if (alIsBuffer(oggObj)) {
-        alDeleteBuffers(1, &oggObj);
-        auto it = find(oggObjs.begin(), oggObjs.end(), oggObj);
-        audioObjs.erase(it);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
-    }
+    assert(alIsBuffer(oggObj));
+    alDeleteBuffers(1, &oggObj);
+    audioObjs.erase(oggObj);
 }
 
 void setOggAudioObj(unsigned audioObj, unsigned oggObj) {
-    if (alIsSource(audioObj) && alIsBuffer(oggObj)) {
-        alSourcei(audioObj, AL_BUFFER, oggObj);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
-    }
+    assert(alIsSource(audioObj) && alIsBuffer(oggObj));
+    alSourcei(audioObj, AL_BUFFER, oggObj);
 }
 
 void setVolumeAudioObj(unsigned audioObj, float volume) {
-    if (alIsSource(audioObj) && (volume >= 0.0f && volume <= 1.0f)) {
-        alSourcef(audioObj, AL_GAIN, volume);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
-    }
+    assert(alIsSource(audioObj) && (volume >= 0.0f && volume <= 1.0f));
+    alSourcef(audioObj, AL_GAIN, volume);
 }
 
 void setLoopAudioObj(unsigned audioObj, bool isLoop) {
-    if (alIsSource(audioObj)) {
-        alSourcei(audioObj, AL_LOOPING, isLoop ? AL_TRUE : AL_FALSE);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
-    }
+    assert(alIsSource(audioObj));
+    alSourcei(audioObj, AL_LOOPING, isLoop ? AL_TRUE : AL_FALSE);
 }
 
 void play(unsigned audioObj) {
-    if (alIsSource(audioObj)) {
-        alSourceRewind(audioObj);
-        alSourcePlay(audioObj);
-    }
-    else {
-        printf("WARNING: invalid args for %s", __FUNCTION__);
+    assert(alIsSource(audioObj));
+    alSourcePlay(audioObj);
+}
+
+void pause(unsigned audioObj) {
+    assert(alIsSource(audioObj));
+    alSourcePause(audioObj);
+}
+
+void stop(unsigned audioObj) {
+    assert(alIsSource(audioObj));
+    alSourceStop(audioObj);
+}
+
+void stopAll() {
+    for each (auto pair in audioObjs) {
+        stop(pair.first);
     }
 }
 

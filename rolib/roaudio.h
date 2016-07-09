@@ -18,6 +18,10 @@ void setVolumeAudioObj(unsigned audioObj, float volume);
 void setLoopAudioObj(unsigned audioObj, bool isLoop);
 
 void play(unsigned audioObj);
+void pause(unsigned audioObj);
+void stop(unsigned audioObj);
+
+void stopAll();
 
 } // namespace roaudio
 

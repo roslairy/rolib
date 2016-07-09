@@ -15,31 +15,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="al.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="alc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="efx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="efx-creative.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EFX-Util.h">
+    <ClCompile Include="ProgramBuilder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="roaudio.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rograph.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ProgramBuilder.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="roaudio.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="xram.h">
+    <ClInclude Include="rograph.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="roaudio.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="SOIL.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="roinput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
