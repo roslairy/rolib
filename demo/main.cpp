@@ -1,8 +1,7 @@
-#include "..\rograph\rograph.h"
-#pragma comment(lib, "rograph.lib")
-
-#include "..\roaudio\roaudio.h"
-#pragma comment(lib, "roaudio.lib")
+#include <rograph.h>
+#include <roaudio.h>
+#include <roinput.h>
+#pragma comment(lib, "rolib.lib")
 
 #include <stdio.h>
 
@@ -28,9 +27,14 @@ int main() {
     rograph::setSize(po1, 800, 600);
     float degree = 0;
     int x, y;
+    int cnt = 0;
     while (!rograph::isFrameClosed()) {
         if (roinput::getKeyPress(roinput::KEY_Q)) break;
-        if (roinput::getMousePress(roinput::MOUSE_BUTTON_RIGHT)) break;
+        if (cnt == 120) roaudio::pause(ao);
+        else if (cnt == 240) roaudio::play(ao);
+        else if (cnt == 360) roaudio::stop(ao);
+        else if (cnt == 480) roaudio::play(ao);
+        cnt++;
         roinput::getCursorPos(&x, &y);
         printf("x:%d\ty:%d\n", x, y);
         rograph::setRotate(po, degree);
