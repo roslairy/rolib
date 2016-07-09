@@ -3,7 +3,7 @@
 ## NEXT STEP
 
 add comments on codes for doxygen
-add tests
+add tests （maybe using boost)
 function to load from memory
 
 ## roaudio
