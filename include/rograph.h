@@ -11,6 +11,9 @@ void release();
 
 // load a texture from buffer, return TBO
 unsigned loadTexture(const char *path);
+unsigned loadTexture(unsigned char *buffer, int size);
+
+void unloadTexture(unsigned texture);
 
 // create a paint obj
 unsigned createPaintObj();
