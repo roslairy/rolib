@@ -3,6 +3,7 @@
 #include <roinput.h>
 #pragma comment(lib, "rolib.lib")
 
+#include <fstream>
 #include <stdio.h>
 
 int main() {
@@ -16,7 +17,17 @@ int main() {
 
     rograph::init("Test frame", 800, 600);
     unsigned po = rograph::createPaintObj();
-    unsigned tex = rograph::loadTexture(".\\test.JPG");
+
+    std::ifstream f(".\\test.jpg", std::ios::binary | std::ios::in);
+    int length;
+    f.seekg(0, std::ios::end);    // go to the end  
+    length = f.tellg();           // report location (this is the length)  
+    f.seekg(0, std::ios::beg);    // go back to the beginning  
+    char *buffer = new char[length];    // allocate memory for a buffer of appropriate dimension  
+    f.read(buffer, length);       // read the whole file into the buffer  
+    f.close();       // close file handle  
+    unsigned tex = rograph::loadTexture((unsigned char*)buffer, length);
+
     rograph::setTexture(po, tex);
     rograph::setSize(po, 300, 300);
     rograph::setAnchor(po, 0.5, 0.5);
@@ -34,6 +45,7 @@ int main() {
         else if (cnt == 240) roaudio::play(ao);
         else if (cnt == 360) roaudio::stop(ao);
         else if (cnt == 480) roaudio::play(ao);
+        if (cnt == 120) rograph::unloadTexture(tex);
         cnt++;
         roinput::getCursorPos(&x, &y);
         printf("x:%d\ty:%d\n", x, y);

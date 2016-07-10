@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <algorithm>
 
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
@@ -129,12 +130,30 @@ GLuint loadTexture(const char *path) {
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
     );
-    if (tex == 0) {
-        printf("WARNING: Failed to load texture of %s", path);
-        return 0;
-    }
+    assert(tex != 0);
     textures.push_back(tex);
     return tex;
+}
+
+unsigned loadTexture(unsigned char *buffer, int size) {
+    unsigned tex = SOIL_load_OGL_texture_from_memory
+    (
+        buffer,
+        size,
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT
+    );
+    assert(tex != 0);
+    textures.push_back(tex);
+    return tex;
+}
+
+void unloadTexture(unsigned texture) {
+    auto it = find(textures.begin(), textures.end(), texture);
+    assert(it != textures.end());
+    glDeleteTextures(1, &*it);
+    textures.erase(it);
 }
 
 unsigned createPaintObj() {
