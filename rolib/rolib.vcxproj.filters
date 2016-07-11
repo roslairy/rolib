@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ProgramBuilder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="roaudio.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -26,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ProgramBuilder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="roaudio.h">
       <Filter>头文件</Filter>
     </ClInclude>

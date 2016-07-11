@@ -10,11 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "demo\demo.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rolib", "rolib\rolib.vcxproj", "{4A7968E2-DF98-459D-93BC-09D714C048A1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unit_tests", "unit_tests\unit_tests.vcxproj", "{699E24D5-C14E-4EFF-81BC-FAD1817B7894}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4A7968E2-DF98-459D-93BC-09D714C048A1} = {4A7968E2-DF98-459D-93BC-09D714C048A1}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -39,14 +34,6 @@ Global
 		{4A7968E2-DF98-459D-93BC-09D714C048A1}.Release|x64.Build.0 = Release|x64
 		{4A7968E2-DF98-459D-93BC-09D714C048A1}.Release|x86.ActiveCfg = Release|Win32
 		{4A7968E2-DF98-459D-93BC-09D714C048A1}.Release|x86.Build.0 = Release|Win32
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Debug|x64.ActiveCfg = Debug|x64
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Debug|x64.Build.0 = Debug|x64
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Debug|x86.ActiveCfg = Debug|Win32
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Debug|x86.Build.0 = Debug|Win32
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Release|x64.ActiveCfg = Release|x64
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Release|x64.Build.0 = Release|x64
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Release|x86.ActiveCfg = Release|Win32
-		{699E24D5-C14E-4EFF-81BC-FAD1817B7894}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
