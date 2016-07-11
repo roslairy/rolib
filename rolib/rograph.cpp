@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 #include <algorithm>
 
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include "SOIL.h"
-#include "ProgramBuilder.h"
 #include "glm\mat4x4.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
@@ -21,6 +21,47 @@ namespace rograph {
 
 using namespace std;
 using namespace glm;
+
+char *vertexShaderStr = "\n\
+#version 430 core\n\
+#pragma debug(on)\n\
+\n\
+in vec4 ivPos;\n\
+in vec2 ivTex;\n\
+\n\
+uniform mat4 backZero;\n\
+uniform mat4 rotate;\n\
+uniform mat4 translate;\n\
+\n\
+uniform mat4 ortho;\n\
+\n\
+out vec2 tvTex;\n\
+\n\
+void main() {\n\
+    gl_Position = ortho * translate * rotate * backZero * ivPos;\n\
+    tvTex = ivTex;\n\
+}\n\
+\n\
+";
+
+char *fragmentShaderStr = "\n\
+#version 430 core\n\
+#pragma debug(on)\n\
+\n\
+uniform sampler2D tex;\n\
+uniform float opacity;\n\
+\n\
+in vec2 tvTex;\n\
+\n\
+out vec4 fColor;\n\
+\n\
+void main() {\n\
+    vec4 texel = texture(tex, tvTex.st);\n\
+    texel.a = opacity * texel.a;\n\
+    fColor = texel;\n\
+}\n\
+\n\
+";
 
 // indicate a vector in 2-dimision
 typedef struct _Vector {
@@ -254,6 +295,8 @@ void rebuildMatrixAfterResizeAndReanchor(PaintObj *obj) {
         vec3(-obj->size.x * obj->anchor.x, -obj->size.y * obj->anchor.y, 0.0f));
 }
 
+GLuint compileShaderProgram(char *vert, char *frag);
+
 void initOpengl(int width, int height) {
     // init glew
     if (glewInit() != GLEW_OK) {
@@ -267,10 +310,7 @@ void initOpengl(int width, int height) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // build shaders
-    ProgramBuilder builder;
-    builder.addShader(GL_VERTEX_SHADER, "./shaders/rograph.vert");
-    builder.addShader(GL_FRAGMENT_SHADER, "./shaders/rograph.frag");
-    GLuint program = builder.build();
+    GLuint program = compileShaderProgram(vertexShaderStr, fragmentShaderStr);
     glUseProgram(program);
     glDeleteProgram(program);
 
@@ -300,6 +340,43 @@ void initOpengl(int width, int height) {
     GLuint ivTexLoc = glGetAttribLocation(program, "ivTex");
     glVertexAttribPointer(ivTexLoc, 2, GL_FLOAT, GL_FALSE, 0, (void*)sizeof(Position));
     glEnableVertexAttribArray(ivTexLoc);
+}
+
+GLuint compileShader(const char *str, GLenum type) {
+    GLuint shader = glCreateShader(type);
+    glShaderSource(shader, 1, &str, NULL);
+    glCompileShader(shader);
+    GLint status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    if (status == GL_TRUE) {
+        return shader;
+    }
+    else {
+        GLint infoLogLength;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+        GLchar *strInfoLog = new GLchar[infoLogLength + 1];
+        glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
+
+        fprintf(stdout, "Compile failure in a shader:\n%s\n", strInfoLog);
+        delete[] strInfoLog;
+
+        return 0;
+    }
+}
+
+GLuint compileShaderProgram(char *vert, char *frag) {
+    GLuint vertexShader = compileShader(vert, GL_VERTEX_SHADER);
+    GLuint fragmentShader = compileShader(frag, GL_FRAGMENT_SHADER);
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+    glLinkProgram(program);
+
+    GLint status;
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    return status == GL_TRUE ? GLuint(program) : 0;
 }
 
 void createFrame(const char *title, int width, int height) {

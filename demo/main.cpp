@@ -48,7 +48,7 @@ int main() {
         if (cnt == 120) rograph::unloadTexture(tex);
         cnt++;
         roinput::getCursorPos(&x, &y);
-        printf("x:%d\ty:%d\n", x, y);
+        //printf("x:%d\ty:%d\n", x, y);
         rograph::setRotate(po, degree);
         degree += 0.3f;
         rograph::clear();
