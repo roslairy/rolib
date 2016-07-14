@@ -1,7 +1,11 @@
 #ifndef _ROGEN_ROINPUT_H_
 #define _ROGEN_ROINPUT_H_
 
-
+/**
+* API for Input
+* All these functions can be called after initializing rograph.
+* Value returned by these functions will refresh after calling rograph::updateFrame().
+*/
 
 namespace roinput {
 
