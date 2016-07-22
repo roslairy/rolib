@@ -65,7 +65,7 @@ unsigned createAudioObj() {
     return source;
 }
 
-void releaseAudioObj(ALuint audioObj) {
+void releaseAudioObj(unsigned audioObj) {
     assert(alIsSource(audioObj));
     stop(audioObj);
     alDeleteSources(1, &audioObj);
